@@ -62,9 +62,9 @@ export const menu: MenuCategory[] = [
 ];
 
 export const testimonials = [
-  { name: "Sophia R.", rating: 5, text: "The handmade tagliatelle transported me straight back to Bologna. Service was warm and unhurried — exactly what an evening out should feel like." },
-  { name: "Marco L.", rating: 5, text: "Authentic flavours, generous portions and a wine list that surprises. The carbonara is the best in Melbourne, full stop." },
-  { name: "Elena P.", rating: 5, text: "From the moment we walked in we felt like family. The tiramisu alone is worth the trip across town." },
+  { name: "Person 1.", rating: 5, text: "The handmade tagliatelle transported me straight back to Bologna. Service was warm and unhurried — exactly what an evening out should feel like." },
+  { name: "Person 2.", rating: 5, text: "Authentic flavours, generous portions and a wine list that surprises. The carbonara is the best in Melbourne, full stop." },
+  { name: "Person 3.", rating: 5, text: "From the moment we walked in we felt like family. The tiramisu alone is worth the trip across town." },
 ];
 
 export type Reservation = {

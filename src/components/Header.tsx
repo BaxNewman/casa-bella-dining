@@ -64,7 +64,7 @@ export function Header({ onBook }: { onBook: () => void }) {
             onClick={onBook}
             className="shrink-0 rounded-full bg-terracotta px-5 text-cream shadow-md hover:bg-terracotta-deep sm:px-7"
           >
-            Book Now
+            Apply for a booking
           </Button>
           <button
             type="button"

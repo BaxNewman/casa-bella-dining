@@ -32,7 +32,7 @@ export function Hero({ onBook }: { onBook: () => void }) {
             size="lg"
             className="rounded-full bg-terracotta px-8 py-6 text-base text-cream shadow-warm hover:bg-terracotta-deep"
           >
-            Book a Table
+            Request Reservation
           </Button>
           <Button
             asChild

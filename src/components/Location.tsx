@@ -56,7 +56,7 @@ export function Location({ onBook }: { onBook: () => void }) {
               size="lg"
               className="w-full rounded-full bg-terracotta text-cream hover:bg-terracotta-deep"
             >
-              Reserve a Table
+              Request a Reservation
             </Button>
           </div>
         </div>

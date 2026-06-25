@@ -39,7 +39,7 @@ export function BookingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
   const canStep1 = guests > 0 && date && time && seating;
   const canStep2 = name.trim() && /\S+@\S+\.\S+/.test(email) && phone.trim();
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const reservation: Reservation = {
       id: `CB-${Date.now().toString(36).toUpperCase()}`,
       createdAt: new Date().toISOString(),
@@ -48,12 +48,24 @@ export function BookingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       requests: requests.trim(),
     };
     try {
+  await fetch("https://formspree.io/f/mvzjkgre", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(reservation),
+  });
+} catch (error) {
+  console.error("Form submission failed:", error);
+}
+    try {
       const existing: Reservation[] = JSON.parse(localStorage.getItem("casabella_reservations") || "[]");
       existing.push(reservation);
       localStorage.setItem("casabella_reservations", JSON.stringify(existing));
     } catch { /* ignore */ }
     setConfirmed(reservation);
-    toast.success("Reservation confirmed", { description: `Confirmation ${reservation.id}` });
+    toast.success("Reservation request received", { description: `Confirmation ${reservation.id}` });
   };
 
   const formattedDate = date ? new Date(date + "T00:00").toLocaleDateString(undefined, {
@@ -65,10 +77,10 @@ export function BookingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       <DialogContent className="max-w-xl bg-cream p-0 overflow-hidden border-border max-h-[90vh] overflow-y-auto">
         <div className="bg-olive-deep px-6 py-5 text-cream">
           <DialogTitle className="font-display text-2xl">
-            {confirmed ? "Grazie!" : "Reserve a Table"}
+            {confirmed ? "Grazie!" : "Reservation Request"}
           </DialogTitle>
           <DialogDescription className="text-cream/70 mt-1">
-            {confirmed ? "Your table is booked." : "We can't wait to welcome you to Casa Bella."}
+            {confirmed ? "Thank you for your inquiry." : "If we are available you will receive a response from us."}
           </DialogDescription>
           {!confirmed && (
             <div className="mt-5 flex items-center gap-2">
@@ -90,9 +102,9 @@ export function BookingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
               <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-olive/15 text-olive-deep">
                 <Check className="h-8 w-8" />
               </div>
-              <h3 className="mt-5 font-display text-2xl text-charcoal">Reservation Confirmed</h3>
+              <h3 className="mt-5 font-display text-2xl text-charcoal">Request sent through.</h3>
               <p className="mt-1 text-sm text-muted-foreground">
-                A confirmation has been saved. We've reserved your table at Casa Bella.
+                Thank you for your inquiry. We will contact you to confirm availability.
               </p>
               <div className="mt-6 rounded-sm border border-dashed border-terracotta/40 bg-terracotta/5 p-5 text-left">
                 <p className="text-[10px] uppercase tracking-[0.3em] text-terracotta">Confirmation</p>
@@ -175,7 +187,7 @@ export function BookingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
           ) : (
             <div>
               <div className="rounded-sm border border-border bg-cream-warm/50 p-5">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-terracotta">Booking Summary</p>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-terracotta">Booking Request Summary</p>
                 <p className="font-display text-2xl text-charcoal mt-1">{restaurant.name}</p>
                 <p className="text-xs text-muted-foreground">{restaurant.address}</p>
                 <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-sm border-t border-dashed border-border pt-4">
@@ -196,7 +208,7 @@ export function BookingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
                   <ChevronLeft className="h-4 w-4 mr-1" /> Back
                 </Button>
                 <Button onClick={handleConfirm} className="flex-1 rounded-full bg-olive-deep text-cream hover:bg-olive">
-                  Confirm Reservation
+                  Request Reservation
                 </Button>
               </div>
             </div>
