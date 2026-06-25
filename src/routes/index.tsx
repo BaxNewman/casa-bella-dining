@@ -1,29 +1,46 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { Header } from "@/components/Header";
+import { Hero } from "@/components/Hero";
+import { About } from "@/components/About";
+import { MenuSection } from "@/components/Menu";
+import { Gallery } from "@/components/Gallery";
+import { Testimonials } from "@/components/Testimonials";
+import { Location } from "@/components/Location";
+import { Footer } from "@/components/Footer";
+import { BookingDialog } from "@/components/BookingDialog";
+import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Casa Bella Trattoria — Authentic Italian in Melbourne" },
+      { name: "description", content: "Family-owned trattoria serving handmade pasta, wood-fired pizza, and traditional Italian dishes in the heart of Melbourne. Book your table tonight." },
+      { property: "og:title", content: "Casa Bella Trattoria" },
+      { property: "og:description", content: "Traditional Italian cuisine made with passion, family recipes, and the finest ingredients." },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const openBooking = () => setBookingOpen(true);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background text-foreground">
+      <Header onBook={openBooking} />
+      <main>
+        <Hero onBook={openBooking} />
+        <About />
+        <MenuSection />
+        <Gallery />
+        <Testimonials />
+        <Location onBook={openBooking} />
+      </main>
+      <Footer />
+      <BookingDialog open={bookingOpen} onOpenChange={setBookingOpen} />
+      <Toaster position="top-center" />
     </div>
   );
 }
