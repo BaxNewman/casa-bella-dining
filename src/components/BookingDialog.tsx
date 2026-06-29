@@ -48,14 +48,28 @@ export function BookingDialog({ open, onOpenChange }: { open: boolean; onOpenCha
       requests: requests.trim(),
     };
     try {
-  await fetch("https://formspree.io/f/mvzjkgre", {
+  const response = await fetch("https://formspree.io/f/mvzjkgre", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       Accept: "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify(reservation),
+    body: new URLSearchParams({
+      id: reservation.id,
+      date: reservation.date,
+      time: reservation.time,
+      guests: reservation.guests.toString(),
+      seating: reservation.seating,
+      name: reservation.name,
+      email: reservation.email,
+      phone: reservation.phone,
+      requests: reservation.requests || "",
+    }).toString(),
   });
+
+  if (!response.ok) {
+    throw new Error("Failed to send reservation");
+  }
 } catch (error) {
   console.error("Form submission failed:", error);
 }
